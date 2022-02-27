@@ -65,7 +65,7 @@ type ZapLogger struct {
 	defaultCode int
 }
 
-// New logger base zap
+// new logger base zap
 func NewZapLogger(application, environment, std string) Logger {
 	// level
 	level := switchLevel(environment)
@@ -189,7 +189,7 @@ func (c *ZapLogger) build(ctx context.Context, fields ...zapcore.Field) []zapcor
 }
 
 /*
-for the caller
+for caller
 */
 func Debug(ctx context.Context, message string, fields ...Field) {
 	stdout.Debug(ctx, message, fields...)
