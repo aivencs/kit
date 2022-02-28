@@ -3,6 +3,8 @@ module github.com/aivencs/kit
 go 1.17
 
 require (
+	github.com/RedisBloom/redisbloom-go v1.0.0
+	github.com/gomodule/redigo v1.8.8
 	github.com/spf13/viper v1.10.1
 	go.uber.org/zap v1.21.0
 )
