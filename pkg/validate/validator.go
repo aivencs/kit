@@ -51,7 +51,7 @@ func (c *Validator) Check(ctx context.Context, payload interface{}) (string, err
 		case "max":
 			message = fmt.Sprintf("%s的长度不应超过%v", err.Field(), err.Param())
 		case "ne":
-			message = fmt.Sprintf("%s不应为%v", err.Field(), err.Value())
+			message = fmt.Sprintf("%s的值不应为%v", err.Field(), err.Value())
 		case "len":
 			message = fmt.Sprintf("%s的长度必须为%v", err.Field(), err.Param())
 		case "eq":
@@ -69,11 +69,11 @@ func (c *Validator) Check(ctx context.Context, payload interface{}) (string, err
 		case "eqfield":
 			message = fmt.Sprintf("%s的值必须与%v的值相等", err.Field(), err.Param())
 		case "numeric":
-			message = fmt.Sprintf("%s的内容必须为数字", err.Field())
+			message = fmt.Sprintf("%s的值必须为数字", err.Field())
 		case "email":
-			message = fmt.Sprintf("%s的内容必须符合邮箱格式", err.Field())
+			message = fmt.Sprintf("%s的值必须符合邮箱格式", err.Field())
 		case "url":
-			message = fmt.Sprintf("%s的内容必须符合网址格式", err.Field())
+			message = fmt.Sprintf("%s的值必须符合网址格式", err.Field())
 		case "ip":
 			message = fmt.Sprintf("%s的内容必须符合IP格式", err.Field())
 		case "contains":
