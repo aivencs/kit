@@ -160,7 +160,7 @@ func (c *ZapLogger) Fatal(ctx context.Context, message string, fields ...Field) 
 
 // build message body
 func (c *ZapLogger) build(ctx context.Context, fields ...zapcore.Field) []zapcore.Field {
-	keys := []string{"trace", "remark", "traceback", "dataLevel", "duration", "param", "result", "code", "channel", "remote"}
+	keys := []string{"trace", "remark", "traceback", "d-lever", "duration", "param", "result", "code", "channel", "remote"}
 	message := map[string]zapcore.Field{
 		"trace":       zap.String("trace", ctx.Value("trace").(string)),
 		"env":         zap.String("env", c.Env),
@@ -170,7 +170,7 @@ func (c *ZapLogger) build(ctx context.Context, fields ...zapcore.Field) []zapcor
 		"code":        zap.Int("code", c.defaultCode),
 		"traceback":   zap.String("traceback", ""),
 		"duration":    zap.Int64("duration", 0),
-		"dataLevel":   zap.String("dataLevel", "info"),
+		"d-lever":     zap.String("d-lever", "info"),
 		"param":       zap.Any("param", map[string]interface{}{}),
 		"result":      zap.Any("result", map[string]interface{}{}),
 		"remote":      zap.Any("remote", map[string]interface{}{}),
