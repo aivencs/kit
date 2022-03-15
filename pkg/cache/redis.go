@@ -2,6 +2,7 @@ package cache
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	redigo "github.com/gomodule/redigo/redis"
@@ -12,6 +13,7 @@ var (
 	maxIdle     = 20
 	idleTimeout = 120 * time.Second
 	maxActive   = 100
+	once        sync.Once
 )
 
 type CacheOption struct {
@@ -38,13 +40,15 @@ type CacheBaseRedis struct {
 	Pool *redigo.Pool
 }
 
-func CacheFactory(name string, opt CacheOption) {
-	switch name {
-	case "redis":
-		cache = NewCacheBaseRedis(opt)
-	default:
-		cache = NewCacheBaseRedis(opt)
-	}
+func InitCache(name string, opt CacheOption) {
+	once.Do(func() {
+		switch name {
+		case "redis":
+			cache = NewCacheBaseRedis(opt)
+		default:
+			cache = NewCacheBaseRedis(opt)
+		}
+	})
 }
 
 // new cache base redis

@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"sync"
 
 	"github.com/go-playground/validator"
 )
 
+var once sync.Once
 var inspector Inspector
 
 type Inspector interface {
@@ -18,13 +20,15 @@ type Validator struct {
 	Instance *validator.Validate
 }
 
-func ValidateFactory(name string) Inspector {
-	switch name {
-	case "validator":
-		return NewValidator()
-	default:
-		return NewValidator()
-	}
+func InitValidate(name string) {
+	once.Do(func() {
+		switch name {
+		case "validator":
+			inspector = NewValidator()
+		default:
+			inspector = NewValidator()
+		}
+	})
 }
 
 func NewValidator() Inspector {

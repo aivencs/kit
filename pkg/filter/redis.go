@@ -2,6 +2,7 @@ package filter
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	redisbloom "github.com/RedisBloom/redisbloom-go"
@@ -13,6 +14,7 @@ var (
 	maxIdle     = 20
 	idleTimeout = 240 * time.Second
 	maxActive   = 100
+	once        sync.Once
 )
 
 type Filter interface {
@@ -52,13 +54,15 @@ func applyOption(opt FilterOption) {
 	}
 }
 
-func FilterFactory(name string, opt FilterOption) {
-	switch name {
-	case "redis":
-		filter = NewRedisFilter(opt)
-	default:
-		filter = NewRedisFilter(opt)
-	}
+func InitFilter(name string, opt FilterOption) {
+	once.Do(func() {
+		switch name {
+		case "redis":
+			filter = NewRedisFilter(opt)
+		default:
+			filter = NewRedisFilter(opt)
+		}
+	})
 }
 
 // new filter base redis

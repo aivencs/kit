@@ -30,7 +30,7 @@ func main() {
 		Content: "<a>aps<a>",
 	}
 	ctx := context.WithValue(context.Background(), "trace", "ctx-validate-001")
-	v := validate.ValidateFactory("validator")
-	message, _ := v.Check(ctx, users)
+	validate.InitValidate("validator")
+	message, _ := validate.Check(ctx, users)
 	fmt.Println("message: ", message) // output: 邮箱的内容必须符合邮箱格式
 }

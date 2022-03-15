@@ -8,6 +8,6 @@ import (
 
 func main() {
 	opts := config.ConfigOptions{Application: "serviceWork", Env: "product"}
-	config.Init(opts)
+	config.InitConfig("consul", opts)
 	fmt.Println(config.GetString("application"))
 }

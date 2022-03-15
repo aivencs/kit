@@ -20,7 +20,7 @@ func main() {
 		Heartbeat: 120,
 		Qos:       1,
 	}
-	messenger.InitFromFactory("rabbit", option)
+	messenger.InitMessenger("rabbit", option)
 	if !messenger.GetActive(ctx) {
 		fmt.Println("not active")
 		return

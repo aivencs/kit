@@ -18,7 +18,7 @@ func main() {
 		Table:    "",
 		DB:       1,
 	}
-	cache.CacheFactory("redis", opt)
+	cache.InitCache("redis", opt)
 	payload := "19619c9e08f0ed4cc147e211efa8c3fb"
 	r, err := cache.SetEx(ctx, payload, 1, 20)
 	fmt.Println(r, err) // output: OK nil

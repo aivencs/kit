@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sync"
 	"time"
 	"unicode/utf8"
 
@@ -11,6 +12,7 @@ import (
 	_ "github.com/spf13/viper/remote"
 )
 
+var once sync.Once
 var conf Config
 
 const (
@@ -46,12 +48,24 @@ type ConfigOptions struct {
 }
 
 // config init
-func Init(opt ConfigOptions) {
-	config, err := NewConsulConfig(opt)
-	if err != nil {
-		log.Fatal(err)
-	}
-	conf = config
+func InitConfig(name string, opt ConfigOptions) {
+	once.Do(func() {
+		switch name {
+		case "consul":
+			config, err := NewConsulConfig(opt)
+			if err != nil {
+				log.Fatal(err)
+			}
+			conf = config
+		default:
+			config, err := NewConsulConfig(opt)
+			if err != nil {
+				log.Fatal(err)
+			}
+			conf = config
+		}
+
+	})
 }
 
 // new config base consul

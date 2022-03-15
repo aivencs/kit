@@ -19,7 +19,7 @@ func main() {
 		DB:       1,
 		Key:      "seeds",
 	}
-	filter.FilterFactory("redis", opt)
+	filter.InitFilter("redis", opt)
 	payload := "19619c9e08f0ed4cc147e211efa8c3fb"
 	res, err := filter.Add(ctx, payload)
 	fmt.Println(res, err) // output: false nil

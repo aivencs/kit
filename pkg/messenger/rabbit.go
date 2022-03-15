@@ -9,6 +9,7 @@ import (
 	"github.com/streadway/amqp"
 )
 
+var once sync.Once
 var messenger Messenger
 
 type Messenger interface {
@@ -47,13 +48,15 @@ type MenssengerOption struct {
 	Qos       int
 }
 
-func InitFromFactory(name string, opt MenssengerOption) {
-	switch name {
-	case "rabbit":
-		messenger = NewRabbit(opt)
-	default:
-		messenger = NewRabbit(opt)
-	}
+func InitMessenger(name string, opt MenssengerOption) {
+	once.Do(func() {
+		switch name {
+		case "rabbit":
+			messenger = NewRabbit(opt)
+		default:
+			messenger = NewRabbit(opt)
+		}
+	})
 }
 
 func NewRabbit(opt MenssengerOption) Messenger {

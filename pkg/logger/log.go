@@ -4,11 +4,13 @@ import (
 	"context"
 	"os"
 	"sort"
+	"sync"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
+var once sync.Once
 var stdout Logger
 
 const (
@@ -30,8 +32,15 @@ type Logger interface {
 }
 
 // logger init
-func Init(application, environment, std string) {
-	stdout = NewZapLogger(application, environment, std)
+func InitLogger(name, application, environment, std string) {
+	once.Do(func() {
+		switch name {
+		case "zap":
+			stdout = NewZapLogger(application, environment, std)
+		default:
+			stdout = NewZapLogger(application, environment, std)
+		}
+	})
 }
 
 func switchLevel(environment string) Level {
