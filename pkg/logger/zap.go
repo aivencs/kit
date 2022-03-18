@@ -175,9 +175,14 @@ type Log struct {
 	Code  int    `json:"code"`
 }
 
+type Duration struct {
+	Runtime      int64 `json:"runtime"` // 运行耗时
+	ConsumeDelay int64 `json:"delay"`   // 消费延迟
+}
+
 type Attribute struct {
 	Log      Log                    `json:"log"`
-	Duration int64                  `json:"duration"`
+	Duration Duration               `json:"duration"`
 	Param    map[string]interface{} `json:"param"`
 	Output   map[string]interface{} `json:"output"`
 }
