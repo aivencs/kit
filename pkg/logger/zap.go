@@ -32,13 +32,13 @@ type Logger interface {
 }
 
 // logger init
-func InitLogger(name, application, environment, std string) {
+func InitLogger(name, application, environment, alias, std string) {
 	once.Do(func() {
 		switch name {
 		case "zap":
-			stdout = NewZapLogger(application, environment, std)
+			stdout = NewZapLogger(application, environment, alias, std)
 		default:
-			stdout = NewZapLogger(application, environment, std)
+			stdout = NewZapLogger(application, environment, alias, std)
 		}
 	})
 }
@@ -71,11 +71,12 @@ type ZapLogger struct {
 	Logger      *zap.Logger
 	Env         string
 	App         string
+	Alias       string
 	defaultCode int
 }
 
 // new logger base zap
-func NewZapLogger(application, environment, std string) Logger {
+func NewZapLogger(application, environment, alias, std string) Logger {
 	// level
 	level := switchLevel(environment)
 	atomicLevel := zap.NewAtomicLevel()
@@ -105,12 +106,13 @@ func NewZapLogger(application, environment, std string) Logger {
 		atomicLevel,
 	)
 	// new logger
-	logger := zap.New(zapCore, zap.AddCaller(), zap.AddCallerSkip(1))
+	logger := zap.New(zapCore, zap.AddCaller(), zap.AddCallerSkip(3))
 	defer logger.Sync()
 	return &ZapLogger{
 		Logger:      logger,
 		Env:         environment,
 		App:         application,
+		Alias:       alias,
 		defaultCode: 10000,
 	}
 }
@@ -167,22 +169,34 @@ func (c *ZapLogger) Fatal(ctx context.Context, message string, fields ...Field) 
 	c.Writer(ctx, "FATAL", message, fields...)
 }
 
+type Log struct {
+	Final bool   `json:"final"` // 是否为代码段日志
+	Level string `json:"level"` // 数据层面的日志级别
+	Code  int    `json:"code"`
+}
+
+type Attribute struct {
+	Log      Log                    `json:"log"`
+	Duration int64                  `json:"duration"`
+	Param    map[string]interface{} `json:"param"`
+	Output   map[string]interface{} `json:"output"`
+}
+
 // build message body
 func (c *ZapLogger) build(ctx context.Context, fields ...zapcore.Field) []zapcore.Field {
-	keys := []string{"trace", "remark", "traceback", "d-lever", "duration", "param", "result", "code", "channel", "remote"}
+	keys := []string{"trace", "remark", "traceback"}
 	message := map[string]zapcore.Field{
 		"trace":       zap.String("trace", ctx.Value("trace").(string)),
 		"env":         zap.String("env", c.Env),
 		"application": zap.String("application", c.App),
-		"channel":     zap.String("channel", ""),
+		"alias":       zap.String("alias", c.Alias),
 		"remark":      zap.String("remark", ""),
-		"code":        zap.Int("code", c.defaultCode),
 		"traceback":   zap.String("traceback", ""),
-		"duration":    zap.Int64("duration", 0),
-		"d-lever":     zap.String("d-lever", "info"),
-		"param":       zap.Any("param", map[string]interface{}{}),
-		"result":      zap.Any("result", map[string]interface{}{}),
-		"remote":      zap.Any("remote", map[string]interface{}{}),
+		"attribute": zap.Any("attribute",
+			Attribute{Log: Log{Code: c.defaultCode,
+				Final: false,
+				Level: "info",
+			}}),
 	}
 	for i := 0; i < len(fields); i++ {
 		key := fields[i].Key

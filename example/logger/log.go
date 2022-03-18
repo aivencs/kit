@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	logger.InitLogger("zap", "service-work", "product", "json")
+	logger.InitLogger("zap", "service-work", "product", "alias-name", "json")
 	ctx := context.WithValue(context.Background(), "trace", "109873")
 	logger.Info(ctx, "example", zap.Any("param", "aivenc"))
 	otherExample()
