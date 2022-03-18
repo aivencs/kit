@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"sort"
+	"time"
 )
 
 // 生成消息摘要
@@ -30,4 +31,11 @@ func IsContainInt(target int, raw []int) bool {
 		return true
 	}
 	return false
+}
+
+// 计算时间差值
+func CalcTimeDiff(ta, tb string) int64 {
+	t1, _ := time.ParseInLocation("2006-01-02 15:04:05", ta, time.Local)
+	t2, _ := time.ParseInLocation("2006-01-02 15:04:05", tb, time.Local)
+	return t2.Unix() - t1.Unix()
 }
