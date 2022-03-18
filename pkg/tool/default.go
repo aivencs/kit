@@ -1,4 +1,4 @@
-package kits
+package tool
 
 import (
 	"crypto/md5"
