@@ -79,16 +79,18 @@ func (c *Resty) work(ctx context.Context, method string, link string, opt Reques
 	if utf8.RuneCountInString(opt.Proxy) > 6 {
 		client.SetProxy(opt.Proxy)
 	}
+	// set body
+
 	switch method {
 	case "GET":
-		response, err = client.R().Get(link)
+		response, err = client.R().SetBody(opt.Payload).Get(link)
 	case "POST":
 		client.SetHeaders(map[string]string{
 			"Content-Type": "application/json",
 		})
-		response, err = client.R().Post(link)
+		response, err = client.R().SetBody(opt.Payload).Post(link)
 	default:
-		response, err = client.R().Get(link)
+		response, err = client.R().SetBody(opt.Payload).Get(link)
 	}
 	// status code
 	if response.RawResponse.StatusCode < 299 {
