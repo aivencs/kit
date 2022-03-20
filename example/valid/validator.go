@@ -20,17 +20,17 @@ type Users struct {
 
 func main() {
 	users := &Users{
-		Phone:  "1326654487",
-		Passwd: "123",
-		// Code:   "123456",
-		Text:    "abc",
-		Confirm: "123",
+		Phone:   "109287222",
+		Passwd:  "123098",
+		Code:    "123456",
+		Text:    "red",
+		Confirm: "123098",
 		Id:      "12",
-		Email:   "abcfoxmail.com",
+		Email:   "abcfoxmail@foxmail.com",
 		Content: "<a>aps<a>",
 	}
 	ctx := context.WithValue(context.Background(), "trace", "ctx-validate-001")
 	validate.InitValidate("validator")
-	message, _ := validate.Check(ctx, users)
-	fmt.Println("message: ", message) // output: 邮箱的内容必须符合邮箱格式
+	message, err := validate.Check(ctx, users)
+	fmt.Println("message: ", message, err) // output: 邮箱的内容必须符合邮箱格式
 }

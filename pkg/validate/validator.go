@@ -46,7 +46,11 @@ func NewValidator() Inspector {
 func (c *Validator) Check(ctx context.Context, payload interface{}) (string, error) {
 	message := ""
 	err := c.Instance.Struct(payload)
+	if err == nil {
+		return "", err
+	}
 	for _, err := range err.(validator.ValidationErrors) {
+
 		switch err.Tag() {
 		case "required":
 			message = fmt.Sprintf("%s为必填项", err.Field())
