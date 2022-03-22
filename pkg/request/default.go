@@ -92,6 +92,9 @@ func (c *Resty) work(ctx context.Context, method string, link string, opt Reques
 	default:
 		response, err = client.R().SetBody(opt.Payload).Get(link)
 	}
+	if err != nil {
+		return "", err
+	}
 	// status code
 	if response.RawResponse.StatusCode < 299 {
 		switch response.RawResponse.StatusCode {
