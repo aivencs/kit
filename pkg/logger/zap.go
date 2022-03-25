@@ -189,7 +189,7 @@ type Attribute struct {
 
 // build message body
 func (c *ZapLogger) build(ctx context.Context, fields ...zapcore.Field) []zapcore.Field {
-	keys := []string{"trace", "remark", "traceback", "attribute"}
+	keys := []string{"trace", "remark", "traceback", "attribute", "alias"}
 	message := map[string]zapcore.Field{
 		"trace":       zap.String("trace", ctx.Value("trace").(string)),
 		"env":         zap.String("env", c.Env),
