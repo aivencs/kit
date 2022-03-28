@@ -71,12 +71,12 @@ type ZapLogger struct {
 	Logger      *zap.Logger
 	Env         string
 	App         string
-	Alias       string
+	Label       string
 	defaultCode int
 }
 
 // new logger base zap
-func NewZapLogger(application, environment, alias, std string) Logger {
+func NewZapLogger(application, environment, label, std string) Logger {
 	// level
 	level := switchLevel(environment)
 	atomicLevel := zap.NewAtomicLevel()
@@ -112,7 +112,7 @@ func NewZapLogger(application, environment, alias, std string) Logger {
 		Logger:      logger,
 		Env:         environment,
 		App:         application,
-		Alias:       alias,
+		Label:       label,
 		defaultCode: 10000,
 	}
 }
@@ -189,12 +189,12 @@ type Attribute struct {
 
 // build message body
 func (c *ZapLogger) build(ctx context.Context, fields ...zapcore.Field) []zapcore.Field {
-	keys := []string{"trace", "remark", "traceback", "attribute", "alias"}
+	keys := []string{"trace", "remark", "traceback", "attribute", "label"}
 	message := map[string]zapcore.Field{
 		"trace":       zap.String("trace", ctx.Value("trace").(string)),
 		"env":         zap.String("env", c.Env),
 		"application": zap.String("application", c.App),
-		"alias":       zap.String("alias", c.Alias),
+		"label":       zap.String("label", c.Label),
 		"remark":      zap.String("remark", ""),
 		"traceback":   zap.String("traceback", ""),
 		"attribute": zap.Any("attribute",
