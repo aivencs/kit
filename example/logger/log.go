@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aivencs/kit/pkg/logger"
 
@@ -9,6 +10,9 @@ import (
 )
 
 func main() {
+	logger.InitErc()
+	errorc := logger.GetErc("rwa")
+	fmt.Println(errorc)
 	logger.InitLogger("zap", "service-work", "product", "alias-name", "json")
 	ctx := context.WithValue(context.Background(), "trace", "109873")
 	logger.Info(ctx, "example", zap.Any("param", "aivenc"))
