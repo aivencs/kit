@@ -30,12 +30,13 @@ func InitErc() {
 	}
 }
 
-func GetErc(name string) Erc {
+func GetErc(name string, label string) Erc {
 	value := erc[name]
 	if value.Code == 0 {
 		return GetDefaultErc()
 	}
 	value.Name = name
+	value.Label = label
 	return value
 }
 
