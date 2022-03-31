@@ -11,7 +11,7 @@ import (
 
 func main() {
 	logger.InitErc()
-	errorc := logger.GetErc("rwa")
+	errorc := logger.GetDefaultErc()
 	fmt.Println(errorc)
 	logger.InitLogger("zap", "service-work", "product", "label-name", "json")
 	ctx := context.WithValue(context.Background(), "trace", "109873")

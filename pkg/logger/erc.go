@@ -1,5 +1,7 @@
 package logger
 
+import "unicode/utf8"
+
 var erc map[string]Erc
 var defaultName = "success"
 
@@ -36,7 +38,9 @@ func GetErc(name string, label string) Erc {
 		return GetDefaultErc()
 	}
 	value.Name = name
-	value.Label = label
+	if utf8.RuneCountInString(label) > 1 {
+		value.Label = label
+	}
 	return value
 }
 
