@@ -14,7 +14,7 @@ func InitErc() {
 	erc = map[string]Erc{
 		"success":      {Label: "操作成功", Code: 10000, Level: "info"},
 		"check":        {Label: "操作失败", Code: 10001, Level: "check"},
-		"over":         {Label: "超限", Code: 10002, Level: "error"},
+		"overload":     {Label: "超限", Code: 10002, Level: "error"},
 		"timeout":      {Label: "超时", Code: 10003, Level: "error"},
 		"supp":         {Label: "补充数据", Code: 10004, Level: "warn"},
 		"abnormal":     {Label: "非常规状态码", Code: 10005, Level: "error"},
