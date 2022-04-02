@@ -44,6 +44,15 @@ func GetErc(name string, label string) Erc {
 	return value
 }
 
+func GetErcBaseCode(code int) Erc {
+	for _, val := range erc {
+		if val.Code == code {
+			return val
+		}
+	}
+	return GetDefaultErc()
+}
+
 func GetDefaultErc() Erc {
 	value := erc[defaultName]
 	value.Name = defaultName
